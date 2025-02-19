@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BREWTIFUL CAFE - Italian Food</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>BREWTIFUL CAFE</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="restaurants.html">Restaurants</a></li>
+                    <li><a href="offers.html">Offers</a></li>
+                    <li><a href="#" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Welcome to BREWTIFUL CAFE</h2>
+                <p>Enjoy the best Italian food in town!</p>
+            </div>
+        </section>
+        <section class="menu">
+            <div class="container">
+                <h2 align="center">Our Menu</h2>
+                <div class="menu-list">
+                    <div class="menu-item">
+                        <img src="images/breauti/pizza.png" alt="Pizza">
+                        <h3>Margherita Pizza</h3>
+                        <p>Price: ₹250</p>
+                        <button onclick="addToCart(this.parentElement)">Add to Cart</button>
+
+                    </div>
+                    <div class="menu-item">
+                        <img src="images/breauti/spagheti.png" alt="Pasta">
+                        <h3>Spaghetti Carbonara</h3>
+                        <p>Price: ₹200</p>
+                        <button onclick="addToCart(this.parentElement)">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="images/breauti/lasanga.png" alt="Lasagna">
+                        <h3>Lasagna</h3>
+                        <p>Price: ₹300</p>
+                        <button onclick="addToCart(this.parentElement)">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="images/breauti/bruchatte.png" alt="Bruschetta">
+                        <h3>Bruschetta</h3>
+                        <p>Price: ₹150</p>
+                        <button onclick="addToCart(this.parentElement)">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="images/breauti/tiramisu.png" alt="Tiramisu">
+                        <h3>Tiramisu</h3>
+                        <p>Price: ₹180</p>
+                        <button onclick="addToCart(this.parentElement)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 BREWTIFUL CAFE. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+<style>
+    .cart-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            width: 300px;
+            text-align: center;
+            z-index: 1000;
+        }
+        .cart-container ul {
+            list-style: none;
+            padding: 0;
+        }
+        .cart-container li {
+            margin: 5px 0;
+        }
+        .cart-container button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .cart-container button:hover {
+            background-color: #ff4500;
+        }
+        .order-confirmation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            text-align: center;
+            z-index: 2000;
+        }
+    .menu-list {
+        display: flex;
+        justify-content: center; /* Center align the menu items */
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin-bottom: 40px; /* Add gap between menu items and footer */
+    }
+
+    .menu-item {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 200px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    .menu-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .menu-item h3 {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .menu-item p {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .menu-item button {
+        background-color: #ff6347;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .menu-item button:hover {
+        background-color: #ff4500;
+    }
+</style>
+<div id="cart" class="cart-container">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <p>Total: ₹<span id="cart-total">0</span></p>
+    <button onclick="checkout()">Checkout</button>
+    <button onclick="toggleCart()">Close</button>
+</div>
+
+<div id="order-confirmation" class="order-confirmation">Your order has been placed! 🎉</div>
+
+<script>
+     let cart = [];
+    function addToCart(menuItem) {
+    const name = menuItem.querySelector("h3").innerText; // Get item name
+    const priceText = menuItem.querySelector("p").innerText; 
+    const price = parseInt(priceText.replace("Price: ₹", "").trim()); // Extract and convert price
+
+    cart.push({ name, price }); // Add to cart
+    updateCart(); // Update the cart display
+}
+
+
+   
+    function updateCart() {
+        document.getElementById("cart-count").innerText = cart.length;
+        const cartItems = document.getElementById("cart-items");
+        cartItems.innerHTML = "";
+        let total = 0;
+        cart.forEach(item => {
+            total += item.price;
+            const li = document.createElement("li");
+            li.innerText = `${item.name} - ₹${item.price}`;
+            cartItems.appendChild(li);
+        });
+        document.getElementById("cart-total").innerText = total;
+    }
+    function toggleCart() {
+        const cartElement = document.getElementById("cart");
+        cartElement.style.display = cartElement.style.display === "none" ? "block" : "none";
+    }
+    function checkout() {
+        document.getElementById("cart").style.display = "none";
+        document.getElementById("order-confirmation").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("order-confirmation").style.display = "none";
+            cart = [];
+            updateCart();
+        }, 3000);
+    }
+</script>
+</html>
